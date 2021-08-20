@@ -2,7 +2,7 @@ version: '3'
 services:
   asterisk1:
     container_name: asterisk
-    image: dougbtv/asterisk
+    image: andrius/asterisk 
     ports:
      - "5060:5060/udp"  
      - "5038:5038/tcp"  
