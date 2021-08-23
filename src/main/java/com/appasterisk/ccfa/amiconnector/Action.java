@@ -1,6 +1,6 @@
 package com.appasterisk.ccfa.amiconnector;
 
-public class AsteriskAmiAction {
+public class Action {
 
     public static String loginAction(String amiLogin, String amiPassword) {
         String action = "Action: Login" + "\r\n" +

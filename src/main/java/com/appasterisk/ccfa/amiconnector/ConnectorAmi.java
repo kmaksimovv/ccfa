@@ -2,26 +2,31 @@ package com.appasterisk.ccfa.amiconnector;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.Map;
+
+import static java.util.stream.Collectors.toMap;
 
 public class ConnectorAmi {
-  ConfigAmi configAmi;
 
     private static Socket clientSocket;
     private static BufferedReader in;
     private static BufferedWriter out;
 
     public void createConnection() throws IOException {
-        configAmi = new ConfigAmi();
-        configAmi.loadConfigForConnect();
+        PropsAmi propsAmi = new PropsAmi();
+        propsAmi.loadConfigForConnect();
 
-        clientSocket = new Socket(configAmi.getHost(), Integer.parseInt(configAmi.getPort()));
+        clientSocket = new Socket(propsAmi.getHost(), Integer.parseInt(propsAmi.getPort()));
 
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
-        out.write(AsteriskAmiAction.loginAction(configAmi.getLogin(), configAmi.getPassword())); // отправляем сообщение на сервер
+        out.write(Action.loginAction(propsAmi.getLogin(), propsAmi.getPassword()));
         out.flush();
-        String serverWord = in.readLine(); // ждём, что скажет сервер
-        System.out.println(serverWord); // получив - выводим на экран
+        String read;
+        while((read=in.readLine())!=null){
+            System.out.println(read);
+        }
     }
 }
 
