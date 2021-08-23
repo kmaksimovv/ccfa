@@ -3,7 +3,9 @@ package com.appasterisk.ccfa.amiconnector;
 import java.io.*;
 import java.util.Properties;
 
-public class ConfigAmi {
+public class PropsAmi {
+
+    public static final String PATH_TO_PROPERTIES = "src/main/resources/config.properties";
 
     private String login;
     private String password;
@@ -30,10 +32,10 @@ public class ConfigAmi {
 
         FileInputStream fileInputStream = null;
         Properties properties = new Properties();
+
         try {
 
-            String fileName = "src/main/resources/config.properties";
-            fileInputStream = new FileInputStream(fileName);
+            fileInputStream = new FileInputStream(PATH_TO_PROPERTIES);
             properties.load(fileInputStream);
 
             login = properties.getProperty("ami.login");
@@ -41,8 +43,9 @@ public class ConfigAmi {
             host = properties.getProperty("ami.host");
             port = properties.getProperty("ami.port");
 
-        } catch (FileNotFoundException e) {
-            System.out.println("Ошибка! Файл config.properties не найден!");
+        } catch (IOException e) {
+            System.out.println("Ошибка! Файл " + PATH_TO_PROPERTIES + " не найден!");
+            e.printStackTrace();
         } finally {
             if (fileInputStream != null) {
                 fileInputStream.close();
