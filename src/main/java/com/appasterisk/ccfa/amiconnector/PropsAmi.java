@@ -10,7 +10,7 @@ public class PropsAmi {
     private String login;
     private String password;
     private String host;
-    private String port;
+    private int port;
 
     public String getLogin() {
         return login;
@@ -24,7 +24,7 @@ public class PropsAmi {
         return host;
     }
 
-    public String getPort() {
+    public int getPort() {
         return port;
     }
 
@@ -41,7 +41,7 @@ public class PropsAmi {
             login = properties.getProperty("ami.login");
             password = properties.getProperty("ami.password");
             host = properties.getProperty("ami.host");
-            port = properties.getProperty("ami.port");
+            port = Integer.parseInt(properties.getProperty("ami.port"));
 
         } catch (IOException e) {
             System.out.println("Ошибка! Файл " + PATH_TO_PROPERTIES + " не найден!");
