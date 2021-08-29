@@ -5,7 +5,7 @@ import java.util.Properties;
 
 public class PropsAmi {
 
-    public static final String PATH_TO_PROPERTIES = "src/main/resources/config.properties";
+    public static final String PATH_TO_PROPERTIES = "application.properties";
 
     private String login;
     private String password;
