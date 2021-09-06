@@ -1,11 +1,6 @@
-/src/main/java/com/appasterisk/ccfa/amiconnector/
 **/target/
 /target/
 */target/*
-.classpath
-.project
-.settings
-
 # Package Files #
 *.jar
 *.war
@@ -13,3 +8,4 @@
 
 *.iml
 *.idea
+out/*
