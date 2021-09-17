@@ -1,5 +1,8 @@
 package com.appasterisk.ccfa.amiconnector;
 
+import sun.lwawt.macosx.CPrinterDevice;
+import sun.plugin2.util.SystemUtil;
+
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -49,21 +52,33 @@ public class ConnectionHandlerAmi extends Thread {
         }
     }
 
+
     private void parseDataEventsAmi(String data) {
-
-        if (data.contains(":")) {
-            String[] dataSplit = data.split(":");
-            mapEvents.put(dataSplit[0], dataSplit[1]);
-
-            for (Map.Entry<String, String> entry : mapEvents.entrySet()) {
-                System.out.println("key: " + entry.getKey() + ", " + "value: " + entry.getValue());
+        if (!data.isEmpty()) {
+            if (data.indexOf(':') > -1) {
+                String[] dataSplit = data.split(":");
+                mapEvents.put(dataSplit[0], dataSplit[1].trim());
+            } else {
+                mapEvents.put(data, "");
             }
 
+        } else {
+            analyze();
+            mapEvents.clear();
         }
     }
 
-    private void checkLogin() {
+    private void analyze() {
+        checkLogin();
+        System.out.println(mapEvents.values().toArray().length);
+    }
 
+    private void checkLogin() {
+        for (Map.Entry<String, String> entry : mapEvents.entrySet()) {
+            System.out.println(entry.getKey() + " - " + entry.getValue());
+        }
+
+        System.out.println(mapEvents.get("Response"));
     }
 }
 
