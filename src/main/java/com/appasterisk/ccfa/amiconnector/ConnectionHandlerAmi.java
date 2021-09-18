@@ -1,14 +1,13 @@
 package com.appasterisk.ccfa.amiconnector;
 
-import sun.lwawt.macosx.CPrinterDevice;
-import sun.plugin2.util.SystemUtil;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.HashMap;
-import java.util.Map;
 
 public class ConnectionHandlerAmi extends Thread {
 
@@ -18,14 +17,10 @@ public class ConnectionHandlerAmi extends Thread {
     private HashMap<String, String> mapEvents = new HashMap<>();
 
     public void run() {
-        try {
-            createConnection();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        createConnection();
     }
 
-    public void createConnection() throws IOException {
+    public void createConnection() {
         try {
             PropsAmi propsAmi = new PropsAmi();
             propsAmi.loadConfigForConnect();
@@ -45,9 +40,19 @@ public class ConnectionHandlerAmi extends Thread {
             }
         } catch (SocketTimeoutException e) {
             System.out.println("Ошибка сокет тайм-аут");
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
             createConnection();
         } catch (Exception e) {
             System.out.println("Не удалось подключиться к серверу");
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
             createConnection();
         }
     }
@@ -70,15 +75,18 @@ public class ConnectionHandlerAmi extends Thread {
 
     private void analyze() {
         checkLogin();
-        System.out.println(mapEvents.values().toArray().length);
+
     }
 
     private void checkLogin() {
-        for (Map.Entry<String, String> entry : mapEvents.entrySet()) {
-            System.out.println(entry.getKey() + " - " + entry.getValue());
+        if (mapEvents.containsKey("Response") &&
+                mapEvents.containsValue("Success") &&
+                mapEvents.containsKey("ActionID") &&
+                mapEvents.containsValue("9999") &&
+                mapEvents.containsKey("Message") &&
+                mapEvents.containsValue("Authentication accepted")) {
+            System.out.println("Successful connection");
         }
-
-        System.out.println(mapEvents.get("Response"));
     }
 }
 
