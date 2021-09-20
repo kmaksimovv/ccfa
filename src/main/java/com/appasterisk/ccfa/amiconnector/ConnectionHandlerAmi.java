@@ -1,5 +1,7 @@
 package com.appasterisk.ccfa.amiconnector;
 
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
@@ -15,6 +17,10 @@ public class ConnectionHandlerAmi extends Thread {
     private BufferedReader inReadLine;
     private BufferedWriter out;
     private HashMap<String, String> mapEvents = new HashMap<>();
+
+    private static final Logger log = Logger.getLogger(ConnectionHandlerAmi.class);
+    private static final String pathLog4j = "log4j.properties";
+
 
     public void run() {
         createConnection();
@@ -86,6 +92,7 @@ public class ConnectionHandlerAmi extends Thread {
                 mapEvents.containsKey("Message") &&
                 mapEvents.containsValue("Authentication accepted")) {
             System.out.println("Successful connection");
+            log.info("Успешно подключение");
         }
     }
 }
